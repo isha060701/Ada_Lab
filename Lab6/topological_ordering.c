@@ -1,44 +1,57 @@
-#include<iostream>
-#include<stack>
-using namespace std;
-stack<int> s;
-int n,a[30][30],visited[30];
-void topo(int v)
+#include<stdio.h>
+#include<conio.h>
+#include <time.h>
+int a[20][20],visited[20],n,stack[20],top=-1;
+void dfs_helper(int v)
 {
-	visited[v]=1;
-	for(int i=1;i<=n;i++)
-	{
-		if(a[v][i]==1 && !visited[i])
-			topo(i);
-	}
-	s.push(v);
+     int i;
+     visited[v]=1;
+     for(i=1;i<=n;i++)
+     {
+         if(a[v][i] && !visited[i])
+        {
+           dfs_helper(i);
+        }
+     }
+     stack[++top]=v;
 }
-
-int main()
+void dfs()
 {
-	cout<<"Enter the no of vertices"<<endl;
-	cin>>n;
-	cout<<"Enter the adjacency matrix"<<endl;
-	for(int i=1;i<=n;i++)
-	{
-		for(int j=1;j<=n;j++)
-			cin>>a[i][j];
-	}
-	for(int i=1;i<=n;i++)
-		visited[i]=0;
-	for(int i=1;i<=n;i++)
-	{
-		if(!visited[i])
-			topo(i);
-	}
-	
-	cout<<"The topological ordering of vertices is"<<endl;
-
-	while(s.empty()==false)
-	{
-		cout<<s.top()<<" ";
-		s.pop();
-	}
-	cout<<"\n";
-	return 0;
+    for(int i=1;i<=n;i++)
+    {
+        if(!visited[i])
+        {
+            dfs_helper(i);
+        }
+    }
+    while(top>=0)
+    {
+        printf("%d ",stack[top--]);
+    }
+}
+void main()
+{
+int i,j,count=0;
+clock_t start, end;
+double cpu_time_used;
+printf("\n Enter number of vertices:");
+scanf("%d",&n);
+for(i=1;i<=n;i++)
+{
+visited[i]=0;
+for(j=1;j<=n;j++)
+a[i][j]=0;
+}
+printf("\n Enter the adjacency matrix:\n");
+for(i=1;i<=n;i++)
+for(j=1;j<=n;j++)
+scanf("%d",&a[i][j]);
+start = clock();
+dfs();
+end = clock();
+printf("\n");
+cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+printf("TIME FOR FUNCTION EXECUTION is %f\n", cpu_time_used);
+getch();
+}
 }
