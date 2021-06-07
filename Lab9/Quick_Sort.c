@@ -1,36 +1,34 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-void quicksort(int list[], int low, int high)
+int partition (int arr[], int low, int high)
 {
-    int pivot, i, j, temp;
+    int pivot = arr[high]; 
+    int i = (low - 1);
+ 
+    for (int j = low; j <= high - 1; j++)
+    {
+        if (arr[j] < pivot)
+        {
+            i++;
+            int temp=arr[i];
+            arr[i]=arr[j];
+            arr[j]=temp;
+        }
+    }
+    int temp=arr[i+1];
+    arr[i+1]=arr[high];
+    arr[high]=temp;
+    return (i + 1);
+}
+void quickSort(int arr[], int low, int high)
+{
     if (low < high)
     {
-        pivot = low;
-        i = low;
-        j = high;
-        while (i < j) 
-        {
-            while (list[i] <= list[pivot] && i <= high)
-            {
-                i++;
-            }
-            while (list[j] > list[pivot] && j >= low)
-            {
-                j--;
-            }
-            if (i < j)
-            {
-                temp = list[i];
-                list[i] = list[j];
-                list[j] = temp;
-            }
-        }
-        temp = list[j];
-        list[j] = list[pivot];
-        list[pivot] = temp;
-        quicksort(list, low, j - 1);
-        quicksort(list, j + 1, high);
+        
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
     }
 }
 void printArray(int arr[], int size) {
@@ -52,7 +50,7 @@ int main()
     printArray(arr, n);
     printf("\n");
     start = clock();
-    quicksort(arr, 0, n - 1);
+    quickSort(arr, 0, n - 1);
     end = clock();
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("Sorted array: \n");
