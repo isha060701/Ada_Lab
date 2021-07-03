@@ -1,4 +1,7 @@
-#include <stdio.h>
+#include<stdio.h>
+#include<conio.h>
+#include <limits.h>
+#include <time.h>
 int board[10][10];
 int isSafe(int board[][10],int i,int j,int n)
 {
@@ -38,6 +41,22 @@ int solveNQueen(int board[][10],int i, int n)
 {
     if(i==n)
     {
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(board[i][j]==1)
+                {
+                    printf("Q ");
+                }
+                else
+                {
+                    printf("_ ");
+                }
+            }
+            printf("\n");
+        }
+        printf("\n\n");
         return 1;
     }
     for(int j=0;j<n;j++)
@@ -59,6 +78,8 @@ int solveNQueen(int board[][10],int i, int n)
 int main()
 {
     int n;
+    clock_t start, end;
+    double cpu_time_used;
     printf("Enter the number of queens:\n");
     scanf("%d",&n);
     for(int i=0;i<n;i++)
@@ -68,24 +89,11 @@ int main()
             board[i][j]=0;
         }
     }
+    start=clock();
     int val=solveNQueen(board,0,n);
-    if(val)
-    {
-        for(int i=0;i<n;i++)
-        {
-            for(int j=0;j<n;j++)
-            {
-                if(board[i][j]==1)
-                {
-                    printf("Q ");
-                }
-                else
-                {
-                    printf("_ ");
-                }
-            }
-            printf("\n");
-        }
-    }
+    end=clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("TIME FOR FUNCTION EXECUTION is %f\n", cpu_time_used);
+    getch();
     return 0;
 }
