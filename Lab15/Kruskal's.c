@@ -6,30 +6,30 @@ int src[20];
 int dest[20];
 int wt[20];
 int parent[20];
-void sort(int wt[],int e)
+void sort(int wt[],int n)
 {
-    int i, j, min_idx;
- 
-    for (i = 0; i <= e-1; i++)
+    int i, j;
+   for (i = 0; i < n-1; i++)     
     {
-        min_idx = i;
-        for (j = i+1; j <= e; j++)
+        for (j = 0; j < n-i-1; j++)
         {
-            if (wt[j] < wt[min_idx])
-            min_idx = j;
+            if (wt[j] > wt[j+1])
+            {
+                int temp=wt[j];
+        wt[j]=wt[j+1];
+        wt[j+1]=temp;
+        
+        temp=src[j];
+        src[j]=src[j+1];
+        src[j+1]=temp;
+        
+        temp=dest[j];
+        dest[j]=dest[j+1];
+        dest[j+1]=temp;
+            }
         }
-        int temp=wt[min_idx];
-        wt[min_idx]=wt[i];
-        wt[i]=temp;
-        
-        temp=src[min_idx];
-        src[min_idx]=src[i];
-        src[i]=temp;
-        
-        temp=dest[min_idx];
-        dest[min_idx]=dest[i];
-        dest[i]=temp;
     }
+                
 }
 int findParent(int v,int parent[])
 {
@@ -56,7 +56,7 @@ void kruskal(int n,int e)
         if(srcParent!=destParent)
         {
             output[count]=wt[i];
-            printf("\n%d-%d=%d",srcParent,destParent,output[count]);
+            printf("\n%d-%d=%d",src[i],dest[i],output[count]);
             count++;
             parent[srcParent]=destParent;
         }
@@ -72,15 +72,14 @@ void main() {
     printf("\n Enter number of edges:");
     scanf("%d",&e);
     int x=0;
+    printf("\n Enter the source,destination,weight of edge respectively:\n");
     for(i=0;i<e;i++)
     {
-        printf("\n Enter the source,destination,weight of edge respectively:\n");
         scanf("%d%d%d",&src[i],&dest[i],&wt[i]);
     }
     
     start = clock();
-    sort(wt,n);
-    
+    sort(wt,e);
     kruskal(n,e);
     end = clock();
     
